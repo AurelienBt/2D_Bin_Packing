@@ -6,7 +6,7 @@ cmake_minimum_required (VERSION 3.8)
 project ("2D_Bin_Packing")
 
 # Ajoutez une source à l'exécutable de ce projet.
-add_executable (2D_Bin_Packing "2D_Bin_Packing.cpp" "2D_Bin_Packing.h")
+add_executable (2D_Bin_Packing "2D_Bin_Packing.cpp" "2D_Bin_Packing.h" "bin.h" "bin.cpp" "rect.h" "rect.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET 2D_Bin_Packing PROPERTY CXX_STANDARD 20)
