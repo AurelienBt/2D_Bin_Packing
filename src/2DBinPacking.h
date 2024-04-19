@@ -1,4 +1,4 @@
-﻿// 2D_Bin_Packing.h : fichier Include pour les fichiers Include système standard,
+﻿// 2DBinPacking.h : fichier Include pour les fichiers Include système standard,
 // ou les fichiers Include spécifiques aux projets.
 
 #pragma once

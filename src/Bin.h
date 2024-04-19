@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "Rect.h"
+
 class Bin {
 public:
 
