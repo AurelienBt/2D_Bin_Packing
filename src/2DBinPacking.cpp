@@ -10,9 +10,10 @@
 
 #include "2DBinPacking.h"
 #include "Rect.h"
+#include "IOUtils.h"
 
 using namespace std;
-
+/*
 void read(int & binWidth, int & binHeight, int & nbItems, vector<Rect> & rectList) {
     cout << filesystem::absolute("2DBinPacking.cpp") << endl;
 	ifstream file("../../../data/binpacking2d-01.bp2d");
@@ -55,14 +56,15 @@ void read(int & binWidth, int & binHeight, int & nbItems, vector<Rect> & rectLis
 	file.close();
 
 }
-
+*/
 int main()
 {
 	int BIN_WIDTH;
 	int BIN_HEIGHT;
 	int NB_ITEMS;
 	vector<Rect> RECT_LIST;
-	read(BIN_WIDTH, BIN_HEIGHT, NB_ITEMS, RECT_LIST);
+    IOUtils ioUtils = IOUtils();
+	ioUtils.read(BIN_WIDTH, BIN_HEIGHT, NB_ITEMS, RECT_LIST);
     cout << BIN_WIDTH << endl;
     cout << BIN_HEIGHT << endl;
     cout << NB_ITEMS << endl;
@@ -70,6 +72,5 @@ int main()
         cout << r << endl;
     }
 
-	
 	return 0;
 }

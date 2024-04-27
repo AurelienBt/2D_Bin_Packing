@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "Bin.h"
-class Bin;
 
 class Rect {
 public:

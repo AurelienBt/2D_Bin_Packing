@@ -2,12 +2,8 @@
 
 #include "Rect.h"
 
-Rect::Rect(int id, int height, int width): id(id), height(height), width(width)
+Rect::Rect(int id, int height, int width): id(id), height(height), width(width), rotation(false), x(-1), y(-1), binId(-1)
 {
-	this->rotation = false;
-	this->x = -1;
-	this->y = -1;
-	this->binId = -1;
 }
 
 Rect::~Rect()
