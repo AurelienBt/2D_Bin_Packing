@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Rect.h"
+class Rect;
 
 class Bin {
 public:
@@ -11,11 +12,11 @@ public:
 	Bin();
 	~Bin();
 
-	int getEmptySpace();
+	int getEmptySpace() const;
 	void addRectangle(Rect rect);
 	void removeRectangle(Rect rect);
 
-	std::vector<Rect> getRectInBinList();
+	std::vector<Rect> getRectInBinList() const;
 
 
 
