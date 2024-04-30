@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "Rect.h"
 
@@ -71,4 +72,20 @@ std::ostream& operator<<(std::ostream& os, const Rect & r)
 	os << "Height : " << r.getHeight() << ", Width : " << r.getWidth() << "\n";
 	os << "X : " << r.getX() << ", Y : " << r.getY() << ", Rotation : " << r.getRotation();
 	return os;
+}
+
+std::string Rect::rectToJSON() const
+{
+	std::stringstream jsonStream;
+	jsonStream << "{" << std::endl;
+	jsonStream << "    \"id\": " << this->getId() << "," << std::endl;
+	jsonStream << "    \"width\": " << this->getWidth() << "," << std::endl;
+	jsonStream << "    \"height\": " << this->getHeight() << std::endl;
+	jsonStream << "    \"rotation\": " << this->getRotation() << std::endl;
+	jsonStream << "    \"binId\": " << this->getBinId() << std::endl;
+	jsonStream << "    \"x\": " << this->getX() << std::endl;
+	jsonStream << "    \"y\": " << this->getY() << std::endl;
+	jsonStream << "}" << std::endl;
+
+	return jsonStream.str();
 }

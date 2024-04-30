@@ -18,6 +18,8 @@ public:
 
 	std::vector<Rect> getRectInBinList() const;
 
+	std::string binToJSON() const;
+
 
 
 private:

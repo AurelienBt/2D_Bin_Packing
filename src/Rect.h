@@ -27,6 +27,8 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Rect & r);
 
+	std::string rectToJSON() const;
+
 
 private:
 
