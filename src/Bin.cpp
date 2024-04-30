@@ -18,13 +18,15 @@ int Bin::getEmptySpace() const
 
 void Bin::addRectangle(Rect rect)
 {
-	//TODO ajouter vérif
+	//TODO ajouter vï¿½rif
 	this->rectInBinList.push_back(rect);
+	//TODO ajouter l'appel d'update empty space 
 }
 
 void Bin::removeRectangle(Rect rect)
 {
 	//TODO
+	//TODO ajouter l'appel d'update empty space 
 	return;
 }
 
