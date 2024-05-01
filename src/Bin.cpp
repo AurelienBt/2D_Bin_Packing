@@ -12,8 +12,7 @@ Bin::~Bin()
 
 int Bin::getEmptySpace() const
 {
-	//TODO
-	//int emptySpace = 
+	//int emptySpace = ;
 	return 0;
 }
 

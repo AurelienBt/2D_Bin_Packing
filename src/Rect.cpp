@@ -3,7 +3,7 @@
 
 #include "Rect.h"
 
-Rect::Rect(int id, int height, int width): id(id), height(height), width(width), rotation(false), x(-1), y(-1), binId(-1)
+Rect::Rect(int id, int height, int width): id(id), height(height), width(width), area(height*width), rotation(false), x(-1), y(-1), binId(-1)
 {
 }
 
@@ -24,6 +24,11 @@ int Rect::getHeight() const
 int Rect::getWidth() const
 {
 	return width;
+}
+
+int Rect::getArea() const
+{
+	return area;
 }
 
 bool Rect::getRotation() const

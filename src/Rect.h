@@ -14,6 +14,7 @@ public:
 	int getId() const;
 	int getHeight() const;
 	int getWidth() const;
+	int getArea() const;
 	bool getRotation() const;
 	void setRotation(bool rotation);
 
@@ -35,6 +36,7 @@ private:
 	int id;
 	int height;
 	int width;
+	int area;
 	bool rotation;
 	int binId;
 
