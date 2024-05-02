@@ -9,12 +9,13 @@ class Rect;
 class Bin {
 public:
 
-	Bin();
+	Bin(int id);
 	~Bin();
 
+	int getId() const;
 	int getEmptySpace() const;
-	void addRectangle(Rect rect);
-	void removeRectangle(Rect rect);
+	bool addRectangle(Rect rect, int coordX, int coordY);
+	bool removeRectangle(Rect rect);
 
 	std::vector<Rect> getRectInBinList() const;
 
@@ -24,6 +25,7 @@ public:
 
 private:
 
+	int id;
 	int emptySpace;
 	void updateEmptySpace(Rect addedRect, bool add);
 

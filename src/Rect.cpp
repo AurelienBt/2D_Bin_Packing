@@ -79,6 +79,11 @@ std::ostream& operator<<(std::ostream& os, const Rect & r)
 	return os;
 }
 
+bool Rect::operator==(const Rect& r)
+{
+	return this->getId() == r.getId();
+}
+
 std::string Rect::rectToJSON() const
 {
 	std::stringstream jsonStream;
