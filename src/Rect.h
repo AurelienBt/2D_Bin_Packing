@@ -27,7 +27,7 @@ public:
 	void setY(int y);
 
 	friend std::ostream& operator<<(std::ostream& os, const Rect & r);
-	bool operator==(const Rect& r);
+	bool operator==(const Rect& r) const;
 
 	std::string rectToJSON() const;
 

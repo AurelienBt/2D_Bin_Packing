@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Rect.h"
+#include "Bin.h"
 
 class FileData {
 
@@ -18,7 +19,7 @@ public:
 	static std::vector<Rect> RECT_LIST;
 	static void init();
 
-	//TODO json
+	static void binPackingToJSON(const std::vector<Bin*>& bins);
 
 private:
 

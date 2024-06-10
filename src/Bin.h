@@ -14,10 +14,10 @@ public:
 
 	int getId() const;
 	int getEmptySpace() const;
-	bool addRectangle(Rect rect, int coordX, int coordY);
+	bool addRectangle(Rect* rect, int coordX, int coordY);
 	bool removeRectangle(Rect rect);
 
-	std::vector<Rect> getRectInBinList() const;
+	std::vector<Rect*> getRectInBinList() const;
 
 	std::string binToJSON() const;
 
@@ -29,7 +29,7 @@ private:
 	int emptySpace;
 	void updateEmptySpace(Rect addedRect, bool add);
 
-	std::vector<Rect> rectInBinList;
+	std::vector<Rect*> rectInBinList;
 
 };
 

@@ -79,7 +79,7 @@ std::ostream& operator<<(std::ostream& os, const Rect & r)
 	return os;
 }
 
-bool Rect::operator==(const Rect& r)
+bool Rect::operator==(const Rect& r) const
 {
 	return this->getId() == r.getId();
 }
@@ -90,10 +90,10 @@ std::string Rect::rectToJSON() const
 	jsonStream << "{" << std::endl;
 	jsonStream << "    \"id\": " << this->getId() << "," << std::endl;
 	jsonStream << "    \"width\": " << this->getWidth() << "," << std::endl;
-	jsonStream << "    \"height\": " << this->getHeight() << std::endl;
-	jsonStream << "    \"rotation\": " << this->getRotation() << std::endl;
-	jsonStream << "    \"binId\": " << this->getBinId() << std::endl;
-	jsonStream << "    \"x\": " << this->getX() << std::endl;
+	jsonStream << "    \"height\": " << this->getHeight() << "," << std::endl;
+	jsonStream << "    \"rotation\": " << this->getRotation() << "," << std::endl;
+	jsonStream << "    \"binId\": " << this->getBinId() << "," << std::endl;
+	jsonStream << "    \"x\": " << this->getX() << "," << std::endl;
 	jsonStream << "    \"y\": " << this->getY() << std::endl;
 	jsonStream << "}" << std::endl;
 
