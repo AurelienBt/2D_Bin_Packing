@@ -33,7 +33,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
         }
         binListCopy.push_back(newBin);
     }
-    cout << "Début de l'algorithme de recul simulé, binListCopy\n" << endl;
 
     vector<vector<FreeRect>> freeRectsCopy = freeRects; // Pour les objets simples comme FreeRect, une copie superficielle peut suffire
 
@@ -58,8 +57,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
             freeRects = x_actual.second;
         }
         bool achieved = false;
-        cout << "Début de l'algorithme de recul simulé\n";
-        cout << "k" << k << endl;
         while (!achieved) {
             int random = 70;//dis(gen);
 
@@ -73,13 +70,11 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                     bin1 = rand() % binList.size();
                     bin2 = rand() % binList.size();
                 }
-                cout << "bin1 " << bin1 << " bin2 " << bin2 << endl;
                 if (binList[bin1]->getRectInBinList().size() > 0 && binList[bin2]->getRectInBinList().size() > 0) {
                     //calcul random des rectangles
                     int rect1Index = rand() % binList[bin1]->getRectInBinList().size();
                     int rect2Index = rand() % binList[bin2]->getRectInBinList().size();
 
-                    cout << "rect1Index" << rect1Index << "rect2Index" << rect2Index << endl;
                     // Faire des copies temporaires des bins
                     vector<Bin2*> binListCopy;
                     for (Bin2* bin : binList) {
@@ -116,7 +111,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                         freeRects[bin1] = tempFreeRects1;
                         freeRects[bin2] = tempFreeRects2;
                         achieved = true;
-                        cout << "Mise à jour des bins et des listes de freeRects si dim égales\n";
                     }
                     else {
                         // Vérifier si le rectangle 1 peut être inséré dans le bin 2
@@ -125,7 +119,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                         tempFreeRects1 = res.second;
 
                         if (fusionable) { //on a effectué des changements donc on va essayer de fusionner deux freeRects  
-                            cout << "if fusionable" << endl;
                             pair <bool, vector<FreeRect>> res2 = FusionFreeRect(tempFreeRects1);
                             fusionable = res2.first;
                             tempFreeRects1 = res2.second;
@@ -134,7 +127,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                         fusionable = res3.first;
                         tempFreeRects2 = res3.second;
                         if (fusionable) { //on a effectué des changements donc on va essayer de fusionner deux freeRects 
-                            cout << "if fusionable 2" << endl;
                             pair <bool, vector<FreeRect>> res4 = FusionFreeRect(tempFreeRects2);
                             fusionable = res4.first;
                             tempFreeRects2 = res4.second;
@@ -142,7 +134,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                         bool inserted = false;
                         for (size_t j = 0; j < tempFreeRects2.size(); ++j) {
                             if (tools.canFit(*rec1, tempFreeRects2[j]) == 1 || tools.canFit(*rec1, tempFreeRects2[j]) == 2) {
-                                cout << "canFit" << endl;
                                 if (tools.canFit(*rec1, tempFreeRects2[j]) == 2) {
                                     rec1->setRotation(rec1->getRotation() ? false : true);
                                 }
@@ -155,16 +146,11 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                             }
                         }
                         if (inserted) {
-                            cout << "je rentre ici" << endl;
                             inserted = false;
                             for (size_t j = 0; j < tempFreeRects1.size(); ++j) {
                                 if (tools.canFit(*rec2, tempFreeRects1[j]) == 1 || tools.canFit(*rec2, tempFreeRects1[j]) == 2) {
                                     if (tools.canFit(*rec2, tempFreeRects1[j]) == 2) {
                                         rec2->setRotation(rec2->getRotation() ? false : true);
-                                    }
-                                    cout << "je rentre jamais ici" << endl;
-                                    for (Bin2* b : x_actual.first) {
-                                        cout << "Bin" << b->binToJSON();
                                     }
                                     tempBin1->addRectangle(rec2, tempFreeRects1[j].x, tempFreeRects1[j].y);
                                     std::vector<FreeRect> newFreeRects = tools.cutRectangle(*rec2, tempFreeRects1[j]);
@@ -178,11 +164,9 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                                 // Mise à jour des bins et des listes de freeRects
                                 binList[bin1] = tempBin1;
                                 achieved = true;
-                                cout << "je rentre jamais ici non plus" << endl;
                                 binList[bin2] = tempBin2;
                                 freeRects[bin1] = tempFreeRects1;
                                 freeRects[bin2] = tempFreeRects2;
-                                cout << "Mise à jour des bins et des listes de freeRects\n";
                             }
                         }
                     }
@@ -190,17 +174,13 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
             }
             // Autres cas de random
             else if (random <= 50) {
-                cout << "cas de rotation\n";
                 // Choix aléatoire d'un bin
                 int binIndex = rand() % binList.size();
                 while (binList[binIndex]->getRectInBinList().size() == 0) {
                     binIndex = rand() % binList.size();
                 }
-                cout << "bin" << binIndex << endl;
                 // Choix aléatoire d'un rectangle dans le bin
                 int rectIndex = rand() % binList[binIndex]->getRectInBinList().size();
-
-                cout << "rectIndex" << rectIndex << endl;
 
                 // Faire une copie temporaire du bin et de la liste des FreeRect
                 vector <Bin2*> binListCopy;
@@ -217,19 +197,16 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                 vector<FreeRect> tempFreeRects = freeRects.at(binIndex);
 
                 Rect* rec = tempBin->getRectInBinList().at(rectIndex);
-                cout << "rect id" << rec->getId();
 
                 // Retirer le rectangle du bin temporaire
                 tempBin->removeRectangle(rec);
                 int width = rec->getHeight();
                 int height = rec->getWidth();
                 if (rec->getHeight() == rec->getWidth()) {
-                    cout << "Mise à jour des bins et des listes de freeRects même taille\n";
                     achieved = true;
                     break;
                 }
                 else {
-                    cout << "else " << endl;
                     pair <bool, vector<FreeRect>> res = FusionRectFreeRect(tempFreeRects, rec);
                     bool fusionable = res.first;
                     tempFreeRects = res.second;
@@ -241,7 +218,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                     bool moved = false;
                     for (size_t j = 0; j < tempFreeRects.size(); ++j) {
                         if (rec->getHeight() <= tempFreeRects.at(j).width && rec->getWidth() <= tempFreeRects.at(j).height) {
-                            cout << "canFit" << endl;
                             rec->setRotation(rec->getRotation() ? false : true);
                             tempBin->addRectangle(rec, tempFreeRects.at(j).x, tempFreeRects.at(j).y);
                             std::vector<FreeRect> newFreeRects = tools.cutRectangle(*rec, tempFreeRects[j]);
@@ -253,7 +229,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                     }
                     if (moved) {
                         // Mise à jour des bins et des listes de freeRects
-                        cout << "Mise à jour des bins et des listes de freeRects\n";
                         binList[binIndex] = tempBin;
                         achieved = true;
                         freeRects[binIndex] = tempFreeRects;
@@ -270,12 +245,10 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                         bin1 = rand() % binList.size();
                         bin2 = rand() % binList.size();
                     }
-                    cout << "bin1 " << bin1 << " bin2 " << bin2 << endl;
                     if (binList[bin1]->getRectInBinList().size() > 0) {
                         //calcul random des rectangles
                         int rect1Index = rand() % binList[bin1]->getRectInBinList().size();
 
-                        cout << "rect1Index" << rect1Index << endl;
                         // Faire des copies temporaires des bins
                         vector<Bin2*> binListCopy;
                         for (Bin2* bin : binList) {
@@ -305,7 +278,6 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                         tempFreeRects1 = res.second;
 
                         if (fusionable) { //on a effectué des changements donc on va essayer de fusionner deux freeRects  
-                            cout << "if fusionable" << endl;
                             pair <bool, vector<FreeRect>> res2 = FusionFreeRect(tempFreeRects1);
                             fusionable = res2.first;
                             tempFreeRects1 = res2.second;
@@ -313,11 +285,9 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                         bool inserted = false;
                         for (size_t j = 0; j < tempFreeRects2.size(); ++j) {
                             if (tools.canFit(*rec1, tempFreeRects2[j]) == 1 || tools.canFit(*rec1, tempFreeRects2[j]) == 2) {
-                                cout << "canFit" << endl;
                                 if (tools.canFit(*rec1, tempFreeRects2[j]) == 2) {
                                     rec1->setRotation(rec1->getRotation() ? false : true);
                                 }
-                                cout << "tempFreeRect" << tempFreeRects2[j].x << " " << tempFreeRects2[j].y << " " << tempFreeRects2[j].width << " " << tempFreeRects2[j].height << endl;
                                 tempBin2->addRectangle(rec1, tempFreeRects2[j].x, tempFreeRects2[j].y);
                                 std::vector<FreeRect> newFreeRects = tools.cutRectangle(*rec1, tempFreeRects2[j]);
                                 tempFreeRects2.erase(tempFreeRects2.begin() + j);
@@ -330,11 +300,9 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
                             // Mise à jour des bins et des listes de freeRects
                             binList[bin1] = tempBin1;
                             achieved = true;
-                            cout << "je rentre jamais ici non plus" << endl;
                             binList[bin2] = tempBin2;
                             freeRects[bin1] = tempFreeRects1;
                             freeRects[bin2] = tempFreeRects2;
-                            cout << "Mise à jour des bins et des listes de freeRects\n";
                         }
                     }
                 }
@@ -359,12 +327,9 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
             }
         }
         double delta = tools.calculateFitness(binList) - f_actual.at(f_actual.size() - 1);
-        cout << "delta" << delta << endl;
-        cout << tools.calculateFitness(binList);
-        cout << f_actual.at(f_actual.size() - 1) << endl;
         //meilleure solution
         if (delta <= 0) {
-            cout << "meilleure solution" << endl;
+            cout << "meilleure solution, fitness : " << endl; /// ajouter l'affichage de la fitness ?
             f_actual.push_back(tools.calculateFitness(binList));
             x_actual = pair<vector<Bin2*>, vector<vector<FreeRect>>>(binList, freeRects);
             if (f_actual.at(f_actual.size() - 1) < f_min) {
@@ -373,20 +338,17 @@ vector<Bin2*> SimulatedAnnealing::runAlgorithm(vector<Bin2*> binList, vector<vec
             }
         }
         else {
-            cout << "autre cas";
             //je tire un nombre aléatoire p entre 0 et 1
             std::srand(static_cast<unsigned int>(std::time(0)));
             // Générer un nombre aléatoire entre 0 et 1
             double p = static_cast<double>(std::rand());
             double result = exp(-delta / t_0);
             if (p < result) {
-                cout << "p<result";
                 f_actual.push_back(tools.calculateFitness(binList));
                 x_actual = pair<vector<Bin2*>, vector<vector<FreeRect>>>(binList, freeRects);
             }
         }
     }
-    cout << "Fin de l'algorithme de recul simulé\n";
     t_0 = t_0 * mu;
     for (Bin2* b : x_min.first) {
         if (b->getRectInBinList().size() == 0) {

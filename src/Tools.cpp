@@ -14,7 +14,6 @@ int Tools::canFit(const Rect& rect, const FreeRect& freeRect) {
     int width = 0;
     int height = 0;
     if (rect.getRotation()) {
-        cout << "il est en rotation" << endl;
         width = rect.getHeight();
         height = rect.getWidth();
     }
@@ -22,8 +21,6 @@ int Tools::canFit(const Rect& rect, const FreeRect& freeRect) {
         width = rect.getWidth();
         height = rect.getHeight();
     }
-    cout << "width : " << width << " height : " << height << endl;
-    cout << "freeRect.width : " << freeRect.width << " freeRect.height : " << freeRect.height << endl;
     if (width <= freeRect.width && height <= freeRect.height) {
         return 1;
     }

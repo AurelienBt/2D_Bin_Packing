@@ -22,37 +22,53 @@ using namespace std;
 
 int main()
 {
-    FileData::init();
+    // choix du jeu de données
+    int choice;
+    do {
+        std::cout << "Veuillez choisir un jeu de données (entrez un nombre entre 1 et 13): ";
+        std::cin >> choice;
+    } while (choice < 1 || choice > 13);
 
-    //vector<Bin*> binList;
+    FileData::init(choice);
 
-    //GeneticAlgorithm gen = GeneticAlgorithm();
+    // choix de l'algorithme
+    int algoChoice;
+    do {
+        std::cout << "Veuillez choisir un algorithme :\n    1 - Simulated Annealing\n    2 - Genetic Algorithm\nVotre choix (1 ou 2): ";
+        std::cin >> algoChoice;
+    } while (algoChoice != 1 && algoChoice != 2);
 
-    //auto debut = std::chrono::high_resolution_clock::now();
+    // Affiche le choix de l'utilisateur
+    if (algoChoice == 1) {
+        NFDHAlgorithm nfdhAlgorithm = NFDHAlgorithm();
+        pair<vector<Bin2*>, vector<vector<FreeRect>>> res = nfdhAlgorithm.runAlgorithm();
+        vector<Bin2*> binList = res.first;
+        vector<vector<FreeRect>> freeRects_final = res.second;
 
-    //gen.GenAlgo(binList);
+        SimulatedAnnealing recuitSimule = SimulatedAnnealing(5, 0.999, 100, 100);
+        binList = recuitSimule.runAlgorithm(binList, freeRects_final);
+        FileData::binPackingToJSON(binList);
+    }
+    else {
+        vector<Bin*> binList;
 
-    //auto fin = std::chrono::high_resolution_clock::now();
-    //auto duree = std::chrono::duration_cast<std::chrono::microseconds>(fin - debut).count();
-    //std::cout << "Temps d'exécution: " << duree << " microsecondes" << std::endl;
+        GeneticAlgorithm gen = GeneticAlgorithm();
+
+        auto debut = std::chrono::high_resolution_clock::now();
+
+        gen.GenAlgo(binList);
+
+        auto fin = std::chrono::high_resolution_clock::now();
+        auto duree = std::chrono::duration_cast<std::chrono::microseconds>(fin - debut).count();
+        std::cout << "Temps d'exécution: " << duree << " microsecondes" << std::endl;
 
 
-    //FileData::binPackingToJSON(binList);
+        FileData::binPackingToJSON(binList);
 
-    //for (Bin* bin : binList) {
-    //    delete bin;
-    //}
-
-
-
-    NFDHAlgorithm nfdhAlgorithm = NFDHAlgorithm();
-    pair<vector<Bin2*>, vector<vector<FreeRect>>> res = nfdhAlgorithm.runAlgorithm();
-    vector<Bin2*> binList = res.first;
-    vector<vector<FreeRect>> freeRects_final = res.second;
-
-    SimulatedAnnealing recuitSimule = SimulatedAnnealing(5, 0.999, 100, 100);
-    binList = recuitSimule.runAlgorithm(binList, freeRects_final);
-    FileData::binPackingToJSON(binList);
+        for (Bin* bin : binList) {
+            delete bin;
+        }
+    }
 
 	return 0;
 }

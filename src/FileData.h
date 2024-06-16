@@ -18,7 +18,7 @@ public:
 	static int BIN_HEIGHT;
 	static int NB_ITEMS;
 	static std::vector<Rect*> RECT_LIST;
-	static void init();
+	static void init(int choice);
 
 	static void binPackingToJSON(const std::vector<Bin*>& bins);
 	static void binPackingToJSON(const std::vector<Bin2*>& bins);

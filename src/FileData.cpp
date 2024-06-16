@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -14,9 +15,13 @@ std::vector<Rect*> FileData::RECT_LIST;
 FileData::FileData(){}
 FileData::~FileData(){}
 
-void FileData::init()
+void FileData::init(int choice)
 {
-    std::ifstream file("../../../data/binpacking2d-01.bp2d");
+    std::ostringstream oss;
+    oss << std::setw(2) << std::setfill('0') << choice;
+    std::string choiceString = oss.str();
+
+    std::ifstream file("../../../data/binpacking2d-"+choiceString+".bp2d");
     if (!file.is_open()) {
         std::cout << "Erreur lors de l'ouverture du fichier." << std::endl;
         return;
