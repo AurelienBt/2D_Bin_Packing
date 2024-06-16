@@ -84,6 +84,71 @@ bool Rect::operator==(const Rect& r) const
 	return this->getId() == r.getId();
 }
 
+// opérateur de comparaison utilisé pour trier les rectangles dans l'algorithme LGFi
+//bool Rect::operator<(const Rect& r) const {
+//	//return this->getArea() < r.getArea();
+//	int height = this->getHeight();
+//	int width = this->getWidth();
+//	if (this->getRotation()) {
+//		int tmp = height;
+//		height = width;
+//		width = tmp;
+//	}
+//	int otherHeight = r.getHeight();
+//	int otherWidth = r.getWidth();
+//	if (r.getRotation()) {
+//		int tmp = otherHeight;
+//		otherHeight = otherWidth;
+//		otherWidth = tmp;
+//	}
+//	return height > otherHeight || (height == otherHeight && width > otherWidth);
+//}
+
+//bool Rect::operator<(const Rect& r) const {
+//	int height = this->getHeight();
+//	int width = this->getWidth();
+//	if (this->getRotation()) {
+//		std::swap(height, width);
+//	}
+//
+//	int otherHeight = r.getHeight();
+//	int otherWidth = r.getWidth();
+//	if (r.getRotation()) {
+//		std::swap(otherHeight, otherWidth);
+//	}
+//
+//	// Tri par hauteur décroissante
+//	if (height != otherHeight) {
+//		return height < otherHeight;
+//	}
+//
+//	// Si les hauteurs sont égales, tri par largeur décroissante
+//	return width < otherWidth;
+//}
+
+bool Rect::compareRects(const Rect* rectG, const Rect* rectD) {
+	return rectG->getArea() > rectD->getArea();
+	//int lhsHeight = rectG->getHeight();
+	//int lhsWidth = rectG->getWidth();
+	//if (rectG->getRotation()) {
+	//	std::swap(lhsHeight, lhsWidth);
+	//}
+
+	//int rhsHeight = rectD->getHeight();
+	//int rhsWidth = rectD->getWidth();
+	//if (rectD->getRotation()) {
+	//	std::swap(rhsHeight, rhsWidth);
+	//}
+
+	//// Tri par hauteur décroissante
+	//if (lhsHeight != rhsHeight) {
+	//	return lhsHeight > rhsHeight;
+	//}
+
+	//// Si les hauteurs sont égales, tri par largeur décroissante
+	//return lhsWidth > rhsWidth;
+}
+
 std::string Rect::rectToJSON() const
 {
 	std::stringstream jsonStream;

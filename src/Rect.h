@@ -28,6 +28,9 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Rect & r);
 	bool operator==(const Rect& r) const;
+	//bool operator<(const Rect& r) const;
+
+	static bool compareRects(const Rect* rectG, const Rect* rectD);
 
 	std::string rectToJSON() const;
 

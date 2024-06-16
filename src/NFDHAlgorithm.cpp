@@ -1,44 +1,71 @@
-#include NFDHAlgorithm.h
+#include <vector>
 
-NFDHAlgorithm(){
+#include "NFDHAlgorithm.h"
+#include "FileData.h"
+#include "Tools.h"
 
+using namespace std;
+
+NFDHAlgorithm::NFDHAlgorithm() {
 }
 
-void runAlgorithm(std::vector<Rect> RectList, std::vector<Bin> BinList){
-    
+NFDHAlgorithm::~NFDHAlgorithm() {
+}
+
+pair<vector<Bin2*>, vector<vector<FreeRect>>> NFDHAlgorithm::runAlgorithm() {
+    vector<Bin2*> binList;
+    Tools tools;
     //Version naïve où l'on créé autant de bin qu'il y a de rectangle => 1 rectangle / bin 
-    /*for (int i=0 ; i<RectList.size() ; i++){
-        Bin bin=new Bin();
-        bin.addRectangle(RectList.get(i)) ; 
-        rectList.get(i).setBinId(i); 
-        BinList.add(bin) ; 
+    /*for (int i=0 ; i<FileData::RECT_LIST.size() ; i++){
+        Bin* bin=new Bin(i);
+        bin->addRectangle(&FileData::RECT_LIST.at(i), 0, 0) ;
+        binList.push_back(bin) ;
     }*/
 
-    /*
-    vraie version de l'algorithme NFDH : 
-    Pour chaque rectangle r de notre liste, on essaie de mettre celui-ci dans la bin actuelle
-    Si cela passe, pas de changement, on ajoute simplement r à la bin actuelle en modifiant l'id_bin de r 
-    Dans le cas inverse, on créé une nouvelle bin pour accueillir r. A nouveau, on modifie l'id_bin de r 
-    */
+    vector<vector<FreeRect>> freeRects_final;
 
-    Bin bin=new Bin();
-    BinList.add(bin);
-    int nbrBin=0 ; 
-    for (int i=0 ; i<RectList.size() ; i++){
-        Bin currentBin=BinList.get(nbrBin) ; 
-        Rect currentRect=RectList.get(i) ; 
-        double aire=currentRect.getHeight()*currentRect.getWidth() ; 
-        if (current.getEmptySpace>aire){
-            //TODO : vérifier plus précisément les collisions 
-            currentBin.addRectangle(currentRect) ; 
-        }else{
-            Bin newBin=new Bin();
-            nbrBin++ ; 
-            newBin.addRectangle(currentRect) ; 
-            BinList.add(newBin) ; 
-        }
-        currentRect.setBinId=nbrBin ; 
+    // Définition d'un rectangle libre initial correspondant à toute la bin
+    FreeRect initialRect = { 0, 0, FileData::BIN_WIDTH, FileData::BIN_HEIGHT };
+    std::vector<FreeRect> freeRects = { initialRect };
+    std::vector<Rect> items;
+    for (Rect* r : FileData::RECT_LIST) {
+        items.push_back(*r);
     }
 
+    Bin2* firstBin = new Bin2(0);
+    binList.push_back(firstBin);
+    Bin2* currentBin = firstBin;
+    vector<pair<Bin2, vector<FreeRect>>> binFreeRects;
 
+    for (int i = 0; i < items.size(); i++) {
+        Rect itemToInsert = items.at(i);
+        bool inserted = false;
+        // Essai d'insertion du rectangle courant dans l'espace libre
+        for (int j = 0; j < freeRects.size(); j++) {
+            if (tools.canFit(itemToInsert, freeRects.at(j)) == 1 || tools.canFit(itemToInsert, freeRects.at(j)) == 2) {
+                Rect* newItem = new Rect(itemToInsert); // Créer une nouvelle instance du rectangle
+                if (tools.canFit(itemToInsert, freeRects.at(j)) == 2) {
+                    newItem->setRotation(true);
+                }
+                currentBin->addRectangle(newItem, freeRects.at(j).x, freeRects.at(j).y);
+                inserted = true;
+                std::vector<FreeRect> newFreeRects = tools.cutRectangle(*newItem, freeRects.at(j));
+                freeRects.erase(freeRects.begin() + j);
+                freeRects.insert(freeRects.end(), newFreeRects.begin(), newFreeRects.end());
+                break;
+            }
+        }
+
+        if (!inserted) {
+            Bin2* newBin = new Bin2(binList.size());
+            binList.push_back(newBin);
+            currentBin = newBin;
+            freeRects_final.push_back(freeRects);
+            freeRects.clear();
+            freeRects.push_back(initialRect);
+            i--; // Réessayer d'insérer le même rectangle dans la nouvelle bin
+        }
+    }
+    freeRects_final.push_back(freeRects);
+    return pair<vector<Bin2*>, vector<vector<FreeRect>>>(binList, freeRects_final);
 }

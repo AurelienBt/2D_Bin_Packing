@@ -7,11 +7,16 @@
 #include <sstream>
 #include <string>
 #include <filesystem>
+#include <chrono>
 
 #include "2DBinPacking.h"
 #include "Rect.h"
 #include "IOUtils.h"
 #include "FileData.h"
+#include "GeneticAlgorithm.h"
+#include "NFDHAlgorithm.h"
+#include "Bin2.h"
+#include "SimulatedAnnealing.h"
 
 using namespace std;
 
@@ -19,21 +24,34 @@ int main()
 {
     FileData::init();
 
-    /*cout << FileData::BIN_WIDTH << endl;
-    cout << FileData::BIN_HEIGHT << endl;
-    cout << FileData::NB_ITEMS << endl;
-    for (const Rect& r : FileData::RECT_LIST) {
-        cout << r << endl;
-    }*/
+    //vector<Bin*> binList;
+
+    //GeneticAlgorithm gen = GeneticAlgorithm();
+
+    //auto debut = std::chrono::high_resolution_clock::now();
+
+    //gen.GenAlgo(binList);
+
+    //auto fin = std::chrono::high_resolution_clock::now();
+    //auto duree = std::chrono::duration_cast<std::chrono::microseconds>(fin - debut).count();
+    //std::cout << "Temps d'exécution: " << duree << " microsecondes" << std::endl;
 
 
-    vector<Bin*> binList;
-    Bin binA = Bin(1);
-    Bin binB = Bin(2);
-    binA.addRectangle(&FileData::RECT_LIST.at(0), 0, 0);
-    binB.addRectangle(&FileData::RECT_LIST.at(1), 0, 0);
-    binList.push_back(&binA);
-    binList.push_back(&binB);
+    //FileData::binPackingToJSON(binList);
+
+    //for (Bin* bin : binList) {
+    //    delete bin;
+    //}
+
+
+
+    NFDHAlgorithm nfdhAlgorithm = NFDHAlgorithm();
+    pair<vector<Bin2*>, vector<vector<FreeRect>>> res = nfdhAlgorithm.runAlgorithm();
+    vector<Bin2*> binList = res.first;
+    vector<vector<FreeRect>> freeRects_final = res.second;
+
+    SimulatedAnnealing recuitSimule = SimulatedAnnealing(5, 0.999, 100, 100);
+    binList = recuitSimule.runAlgorithm(binList, freeRects_final);
     FileData::binPackingToJSON(binList);
 
 	return 0;

@@ -37,8 +37,10 @@ bool Bin::addRectangle(Rect* rect, int coordX, int coordY)
 
 	// Vérifie les chevauchements
 	for (const Rect* r : this->getRectInBinList()) {
-		if (coordX < r->getX() + r->getWidth() && coordX + rectWidth > r->getX() &&
-			coordY < r->getY() + r->getHeight() && coordY + rectHeight > r->getY()) {
+		int rWidth = r->getRotation() ? r->getHeight() : r->getWidth();
+		int rHeight = r->getRotation() ? r->getWidth() : r->getHeight();
+		if (coordX < r->getX() + rWidth && coordX + rectWidth > r->getX() &&
+			coordY < r->getY() + rHeight && coordY + rectHeight > r->getY()) {
 			return false;
 		}
 	}
@@ -87,13 +89,17 @@ std::string Bin::binToJSON() const
 	std::stringstream jsonStream;
 	jsonStream << "{" << std::endl;
 	jsonStream << "    \"id\": " << this->getId() << "," << std::endl;
+	jsonStream << "    \"width\": " << FileData::BIN_WIDTH << "," << std::endl;
+	jsonStream << "    \"height\": " << FileData::BIN_HEIGHT << "," << std::endl;
 	jsonStream << "    \"rectangles\": " << "[" << std::endl;
-	for (int i = 0; i < this->rectInBinList.size(); i++)
-	{
-		jsonStream << this->rectInBinList.at(i)->rectToJSON();
-		jsonStream << "," << std::endl;
-	}
-	jsonStream.seekp(-2, jsonStream.cur); // supprime la virgule superflue
+	if (this->rectInBinList.size() > 0) {
+		for (int i = 0; i < this->rectInBinList.size(); i++)
+		{
+			jsonStream << this->rectInBinList.at(i)->rectToJSON();
+			jsonStream << "," << std::endl;
+		}
+		jsonStream.seekp(-2, jsonStream.cur); // supprime la virgule superflue
+	}	
 	jsonStream << "    ]" << std::endl;
 	jsonStream << "}" << std::endl;
 

@@ -4,15 +4,16 @@
 #include <vector>
 
 #include "Rect.h"
-#include "Bin.h"
+#include "Bin2.h"
+#include "Tools.h"
+using namespace std;
 
-class NFDHALGORITHM {
+class NFDHAlgorithm {
 public:
 
 	NFDHAlgorithm();
 	~NFDHAlgorithm();
-
-	void runAlgorithm(std::vector<Rect> RectList, std::vector<Bin> BinList);
+	pair<vector<Bin2*>, vector<vector<FreeRect>>>runAlgorithm();
 
 private:
 
